@@ -2,11 +2,14 @@ import { Request, Response } from "express";
 import { Item } from "../entities/item.entity";
 import { Db } from "../../config/database";
 import { UpdateResult } from "typeorm";
-
+import { Category } from "../entities/category.entity";
+// import {
+//     instanceToPlain,
+//   } from 'class-transformer';
 
 class ItemController {
     public async createItem(req: Request, res: Response): Promise<Response> {
-        const itemRepository = Db.getRepository(Item) 
+        const itemRepository = Db.getRepository(Item)
         const newItem = new Item()
         newItem.name = req.body.name
         newItem.collected = false
@@ -14,7 +17,8 @@ class ItemController {
 
         try {
             const createdItem: Item = await itemRepository.save(newItem)
-            return res.status(201).send({ msg: "New item created", item: createdItem })
+            console.log(createdItem)
+            return res.status(201).send(createdItem)
         } catch (error) {
             console.log(error)
             return res.status(500).send({ msg: "Internal server error" })
@@ -24,10 +28,11 @@ class ItemController {
     public async getPerList(req: Request, res: Response): Promise<Response> {
         const itemRepository = Db.getRepository(Item)
         try {
-            const items: Item[] = await itemRepository.find({ 
-                where: { list: 
-                    { id: req.params.id } 
-                }, 
+            const items: Item[] = await itemRepository.find({
+                where: {
+                    list:
+                        { id: req.params.id }
+                },
                 relations: {
                     category: true
                 }
@@ -41,9 +46,46 @@ class ItemController {
 
     public async updateItem(req: Request, res: Response): Promise<Response> {
         const itemRepository = Db.getRepository(Item)
+        const categoryRepository = Db.getRepository(Category)
+
+        //At the moment, client sends category name, not id, so find in DB:
+        if (req.body.category) {
+            try {
+                const categoryId = await categoryRepository.findOne({
+                    where: { name: req.body.category }
+                })
+                if (categoryId) {
+                    console.log(categoryId)
+                    req.body.category = categoryId.id
+                }
+            } catch (error) {
+                console.log(error)
+                return res.status(500).send({ msg: "Internal server error" })
+            }
+        }
+
         try {
-            const item:UpdateResult = await itemRepository.update(req.params.id, req.body);
-            return res.status(204).send({ msg: "Item updated", item })
+            // repository.update does not return the updated object:
+
+            const item: UpdateResult = await itemRepository.update(req.params.id, req.body);
+
+            if (item) { 
+            const updatedItem = await itemRepository.findOne({
+                    where: { id: req.params.id},
+                    relations: {
+                        category: true
+                    }
+                });
+
+            // const updatedItemPlain = instanceToPlain(updatedItem) //not sure if necessary
+            // console.log(updatedItemPlain)
+            console.log(updatedItem)
+            return res.status(204).send(updatedItem)
+        } else {
+            console.log("sth went wrong")
+          return res.status(400).send({msg: "Item could not be updated"})
+        }
+        
         } catch (error) {
             console.log(error)
             return res.status(500).send({ msg: "Internal server error" })
@@ -53,8 +95,8 @@ class ItemController {
     public async deleteItem(req: Request, res: Response): Promise<Response> {
         const itemRepository = Db.getRepository(Item)
         try {
-            const item = await itemRepository.delete(req.body.id)
-            return res.status(200).send({ msg: "Item deleted", item })
+            await itemRepository.delete(req.params.id)
+            return res.status(200).send({ msg: "Item deleted"})
         } catch (error) {
             console.log(error)
             return res.status(500).send({ msg: "Internal server error" })

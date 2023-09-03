@@ -17,7 +17,7 @@ export class List {
     date: Date
     @Column({ type: 'boolean', default: true })
     active: boolean
-    @Column({ type: 'float', nullable: true })
+    @Column({ type: 'float', nullable: true, default: 0 })
     total: number
     @ManyToOne(() => User, (user) => user.lists)
     user: User //TARGET RELATION TYPE

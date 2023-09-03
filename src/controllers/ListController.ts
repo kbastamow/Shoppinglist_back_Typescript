@@ -23,7 +23,23 @@ class ListController {
 
         try {
             const createdList = await listRepository.save(newList)
-            return res.status(201).send({ msg: "New list created", list: createdList })
+            return res.status(201).send({ msg: "New list created", list: {id: createdList.id, title: createdList.title} })
+        } catch (error) {
+            console.log(error)
+            return res.status(500).send({ msg: "Internal server error" })
+        }
+    }
+
+    public async getActiveLists(req: IAuthRequest, res: Response): Promise<Response> {
+        const listRepository = Db.getRepository(List);
+        try {
+            const lists: List[] = await listRepository.find({
+                where: { 
+                    active: true,
+                    user: { id: req.user!.id },
+                },
+            })
+            return res.send(lists)
         } catch (error) {
             console.log(error)
             return res.status(500).send({ msg: "Internal server error" })
@@ -38,9 +54,7 @@ class ListController {
         try {
             const list: List | null = await listRepository.findOne({
                 where: { id: req.params.id },
-                relations: {
-                    items: true
-                }
+                relations: ['items', 'items.category'] 
             })
             return res.send(list)
         } catch (error) {

@@ -6,4 +6,5 @@ import { authentication } from "../middlewares/authentication/authentication";
 export const listRouter: Router = Router()
 
 listRouter.post("/", authentication, listController.createList)
+listRouter.get("/", authentication, listController.getActiveLists)
 listRouter.get("/:id", listController.getListById)
