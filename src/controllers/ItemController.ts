@@ -44,14 +44,13 @@ class ItemController {
         }
     }
 
-    public async updateItem(req: Request, res: Response): Promise<Response> {
+    public async updateCategory(req: Request, res: Response): Promise<Response> {
         const itemRepository = Db.getRepository(Item)
         const categoryRepository = Db.getRepository(Category)
-
+        
         //At the moment, client sends category name, not id, so find in DB:
-        if (req.body.category) {
-            try {
-                const categoryId = await categoryRepository.findOne({
+        try {
+             const categoryId = await categoryRepository.findOne({
                     where: { name: req.body.category }
                 })
                 if (categoryId) {
@@ -62,8 +61,35 @@ class ItemController {
                 console.log(error)
                 return res.status(500).send({ msg: "Internal server error" })
             }
+        
+        try {
+            // repository.update does not return the updated object:
+            const item: UpdateResult = await itemRepository.update(req.params.id, req.body);
+            if (item) { 
+            const updatedItem = await itemRepository.findOne({
+                    where: { id: req.params.id },
+                    relations: {
+                        category: true
+                    }
+                });
+            // const updatedItemPlain = instanceToPlain(updatedItem) //not sure if necessary
+            // console.log(updatedItemPlain)
+            console.log(updatedItem)
+            return res.status(204).send(updatedItem)
+        } else {
+            console.log("sth went wrong")
+          return res.status(400).send({msg: "Category could not be updated"})
         }
+        
+        } catch (error) {
+            console.log(error)
+            return res.status(500).send({ msg: "Internal server error" })
+        }
+    }
 
+
+    public async updateItem(req: Request, res: Response): Promise<Response> {
+        const itemRepository = Db.getRepository(Item) 
         try {
             // repository.update does not return the updated object:
 
@@ -71,12 +97,12 @@ class ItemController {
 
             if (item) { 
             const updatedItem = await itemRepository.findOne({
-                    where: { id: req.params.id},
+                    where: { id: req.params.id },
                     relations: {
                         category: true
                     }
                 });
-
+         
             // const updatedItemPlain = instanceToPlain(updatedItem) //not sure if necessary
             // console.log(updatedItemPlain)
             console.log(updatedItem)
