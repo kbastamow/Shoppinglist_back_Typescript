@@ -62,6 +62,23 @@ class ListController {
             return res.status(500).send({ msg: "Internal server error" })
         }
     }
+
+public async updateList(req: Request, res: Response): Promise<Response> {
+
+    //VALIDATE: compare user and list owner
+    console.log(req.body)
+
+    const listRepository = Db.getRepository(List);
+    try {
+        await listRepository.update(req.params.id, req.body)
+        
+        return res.send({msg: "List updated"})
+     
+    } catch (error) {
+        console.log(error)
+        return res.status(500).send({ msg: "Internal server error" })
+    }
+}
 }
 
 export const listController = new ListController()
