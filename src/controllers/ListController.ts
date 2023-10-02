@@ -17,13 +17,13 @@ class ListController {
         newList.date = new Date()
         newList.total = 0
         newList.active = true
-      
+
         newList.user = req.user!
         console.log(req.user)
 
         try {
             const createdList = await listRepository.save(newList)
-            return res.status(201).send({ msg: "New list created", list: {id: createdList.id, title: createdList.title} })
+            return res.status(201).send({ msg: "New list created", list: { id: createdList.id, title: createdList.title } })
         } catch (error) {
             console.log(error)
             return res.status(500).send({ msg: "Internal server error" })
@@ -34,7 +34,7 @@ class ListController {
         const listRepository = Db.getRepository(List);
         try {
             const lists: List[] = await listRepository.find({
-                where: { 
+                where: {
                     active: true,
                     user: { id: req.user!.id },
                 },
@@ -54,8 +54,9 @@ class ListController {
         try {
             const list: List | null = await listRepository.findOne({
                 where: { id: req.params.id },
-                relations: ['items', 'items.category'] 
+                relations: ['items', 'items.category']
             })
+            console.log(list)
             return res.send(list)
         } catch (error) {
             console.log(error)
@@ -63,22 +64,22 @@ class ListController {
         }
     }
 
-public async updateList(req: Request, res: Response): Promise<Response> {
+    public async updateList(req: Request, res: Response): Promise<Response> {
 
-    //VALIDATE: compare user and list owner
-    console.log(req.body)
+        //VALIDATE: compare user and list owner
+        console.log(req.body)
 
-    const listRepository = Db.getRepository(List);
-    try {
-        await listRepository.update(req.params.id, req.body)
-        
-        return res.send({msg: "List updated"})
-     
-    } catch (error) {
-        console.log(error)
-        return res.status(500).send({ msg: "Internal server error" })
+        const listRepository = Db.getRepository(List);
+        try {
+            await listRepository.update(req.params.id, req.body)
+
+            return res.send({ msg: "List updated" })
+
+        } catch (error) {
+            console.log(error)
+            return res.status(500).send({ msg: "Internal server error" })
+        }
     }
-}
 }
 
 export const listController = new ListController()

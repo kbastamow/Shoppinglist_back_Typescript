@@ -8,7 +8,7 @@ import { IAuthRequest } from "../../interfaces/IAuthRequest";
 dotenv.config()
 
 
-export const authentication = async(req: IAuthRequest, res: Response, next: NextFunction): Promise<void | Response> => {
+export const authentication = async (req: IAuthRequest, res: Response, next: NextFunction): Promise<void | Response> => {
     try {
         const token = req.headers.authorization
 
@@ -17,26 +17,24 @@ export const authentication = async(req: IAuthRequest, res: Response, next: Next
         }
 
         const payload = verify(token, process.env.JWT_SECRET!) as JwtPayload
-        if(!payload) {
+        if (!payload) {
             return res.status(498).send("Invalid token")
         }
-        
+
         const user = await Db.getRepository(User).findOne({
             where: {
                 id: payload.id
-        }})
+            }
+        })
 
-        if (user) { 
-        
-        req.user = user
-  
-        console.log("this is req.user from auth: ", req.user)
-        next()
-        } 
+        if (user) {
+            req.user = user
+            next()
+        }
 
     } catch (error) {
-       console.error(error);
-       return res.status(500).send({ error, msg: "Internal server error" });  
+        console.error(error);
+        return res.status(500).send({ error, msg: "Internal server error" });
     }
 }
 
