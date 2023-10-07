@@ -11,7 +11,9 @@ dotenv.config()
 export const authentication = async (req: IAuthRequest, res: Response, next: NextFunction): Promise<void | Response> => {
     try {
         const token = req.headers.authorization
-
+        console.log("checking")
+        console.log(token)
+        console.log(req.headers)
         if (!token) {
             return res.status(498).send("Invalid token")
         }
@@ -29,6 +31,7 @@ export const authentication = async (req: IAuthRequest, res: Response, next: Nex
 
         if (user) {
             req.user = user
+            console.log(user)
             next()
         }
 

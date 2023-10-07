@@ -6,7 +6,7 @@ import { authentication } from "../middlewares/authentication/authentication";
 export const listRouter: Router = Router()
 
 listRouter.post("/", authentication, listController.createList)
-listRouter.put("/:id", listController.updateList)
+listRouter.put("/:id", authentication, listController.updateList)
 listRouter.get("/", authentication, listController.getLists)
-listRouter.get("/:id", listController.getListById)
+listRouter.get("/:id", authentication, listController.getListById)
 listRouter.delete("/:id", authentication, listController.deleteList)
