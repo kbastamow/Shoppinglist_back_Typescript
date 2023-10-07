@@ -13,7 +13,7 @@ class ItemController {
         const newItem = new Item()
         newItem.name = req.body.name
         newItem.collected = false
-        newItem.list = req.body.listId   //must be sent together with 
+        newItem.list = req.body.listId   //must be sent together with  
 
         try {
             const createdItem: Item = await itemRepository.save(newItem)
@@ -51,7 +51,7 @@ class ItemController {
         //At the moment, client sends category name, not id, so find in DB:
         try {
             const categoryId = await categoryRepository.findOne({
-                where: { name: req.body.category }
+                where: { name: req.body.category.name }
             })
             if (categoryId) {
                 console.log(categoryId)

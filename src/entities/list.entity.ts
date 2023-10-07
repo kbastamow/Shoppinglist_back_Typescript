@@ -21,7 +21,7 @@ export class List {
     total: number
     @ManyToOne(() => User, (user) => user.lists)
     user: User //TARGET RELATION TYPE
-    @OneToMany(() => Item, (item) => item.list, { cascade: ['insert', 'update', 'remove'] })
+    @OneToMany(() => Item, (item) => item.list, { onDelete: 'CASCADE' })
     items: Item[]
     @CreateDateColumn()
     createdAt: Date

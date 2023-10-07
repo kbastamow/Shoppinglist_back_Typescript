@@ -29,7 +29,7 @@ export class User {
     createdAt: Date
     @UpdateDateColumn()
     updatedAt: Date
-    @OneToMany(() => List, (list) => list.user, { cascade: true })
+    @OneToMany(() => List, (list) => list.user, { onDelete: 'CASCADE' })
     lists: List[]
-    
+
 }

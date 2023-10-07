@@ -30,12 +30,11 @@ class ListController {
         }
     }
 
-    public async getActiveLists(req: IAuthRequest, res: Response): Promise<Response> {
+    public async getLists(req: IAuthRequest, res: Response): Promise<Response> {
         const listRepository = Db.getRepository(List);
         try {
             const lists: List[] = await listRepository.find({
                 where: {
-                    active: true,
                     user: { id: req.user!.id },
                 },
             })
@@ -75,6 +74,19 @@ class ListController {
 
             return res.send({ msg: "List updated" })
 
+        } catch (error) {
+            console.log(error)
+            return res.status(500).send({ msg: "Internal server error" })
+        }
+    }
+
+    public async deleteList(req: Request, res: Response): Promise<Response> {
+        console.log(req.params.id)
+
+        const listRepository = Db.getRepository(List);
+        try {
+            await listRepository.delete(req.params.id)
+            return res.send({ msg: "List Deleted" })
         } catch (error) {
             console.log(error)
             return res.status(500).send({ msg: "Internal server error" })
