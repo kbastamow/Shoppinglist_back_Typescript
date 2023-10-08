@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { validationResult } from 'express-validator/src/validation-result';
-// import { sign, verify } from 'jsonwebtoken';
 import { Db } from '../../config/database';
 import { User } from '../entities/user.entity';
 import dotenv from 'dotenv'
 import { sign } from 'jsonwebtoken';
+import { IAuthRequest } from '../interfaces/IAuthRequest';
 dotenv.config()
 
 
@@ -36,7 +36,7 @@ class UserController {
     public async login(req: Request, res: Response): Promise<Response> {
         console.log(req.body)
 
-              try {
+        try {
             const user = await Db.getRepository(User).findOne({ where: { email: req.body.email } })
             if (!user) {
                 return res.status(400).send({ msg: "Incorrect username or password." })
@@ -57,10 +57,25 @@ class UserController {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { password, confirmed, ...limitedDetails } = user;
 
-            return res.send( limitedDetails );
+            return res.send(limitedDetails);
 
         } catch (error) {
             console.error(error)
+            return res.status(500).send({ msg: 'Internal server error' });
+
+        }
+    }
+
+    public async logout(req: IAuthRequest, res: Response): Promise<Response> {
+        try {
+            const user = await Db.getRepository(User).findOne({ where: { id: req.user!.id } })
+            if (user) {
+                user.token = "";
+                await Db.getRepository(User).save(user);
+                return res.send({ msg: "logged out" })
+            }
+            return res.status(400).send({ msg: "Problem logging out." })
+        } catch (error) {
             return res.status(500).send({ msg: 'Internal server error' });
 
         }
