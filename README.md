@@ -11,6 +11,16 @@ The project is a study of typescript usage and part of a full stack application.
 
 [Shoppinglist frontend](https://github.com/kbastamow/Shoppinglist_front_Typescript)
 
+
+## Table of contents
+  * [Description](#description---)
+  * [Tech and tools](#tech-and-tools---)
+  * [Project structure](#project-structure---)
+  * [Future development](#future-development---)
+  * [Author](#author---)
+  * [Acknowledgements](#acknowledgements)
+  * [Frontend peek](#frontend-peek-)
+
 ## Tech and tools 💻
 
 - Node.js and Express
@@ -82,7 +92,7 @@ KBastamow
 
 The Shopping List full stack app was built following this [Typescript course on Udemy](https://www.udemy.com/course/typescript-course/) and uses the stack and structure of the course project. Nevertheless, the project idea and implementation are mine alone. 
 
-### Take a look at the frontend here: 
+## Frontend peek: 
 [Shoppinglist frontend](https://github.com/kbastamow/Shoppinglist_front_Typescript)
 
 ![frontend](./readme/home.png)
