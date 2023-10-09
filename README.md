@@ -1,8 +1,8 @@
 # Backend Project "Shopping list" with Node.js and Typescript
 
-![logos](logoback.png)
+![logos](./readme/logoback.png)
 
-## Description 📜
+## 📜Description 
 
 This is the backend for a simple shopping list app, where users can log in and create a shopping list or lists. 
 The project is a study of typescript usage and part of a full stack application. 
@@ -11,17 +11,17 @@ The project is a study of typescript usage and part of a full stack application.
 
 [Shoppinglist frontend](https://github.com/kbastamow/Shoppinglist_front_Typescript)
 
+# Table of contents
 
-## Table of contents
-  * [Description](#description---)
-  * [Tech and tools](#tech-and-tools---)
-  * [Project structure](#project-structure---)
-  * [Future development](#future-development---)
-  * [Author](#author---)
-  * [Acknowledgements](#acknowledgements)
-  * [Frontend peek](#frontend-peek-)
+- [Description](#description)
+- [Tech and tools](#-tech-and-tools)
+- [Project structure](#-project-structure)
+- [Future development](#-future-development)
+- [Author](#-author)
+- [Acknowledgements](#acknowledgements)
+- [Frontend peek:](#frontend-peek)
 
-## Tech and tools 💻
+## 💻 Tech and tools 
 
 - Node.js and Express
 - MySQL database
@@ -32,8 +32,7 @@ The project is a study of typescript usage and part of a full stack application.
 Dev:
 - Eslint & Prettier for linting
 
-## Project structure 🌵
-
+## 🌵 Project structure 
 At the root we have **index.ts**.
 
 **Config** folder holds the database connection.
@@ -75,8 +74,7 @@ At the root we have **index.ts**.
 
 where **controllers** holds the logic for the endpoints; **entities** are Typeorm models for the database tables; **interfaces** holds type definitions; **middlewares** contains user authentication code through token, and validators for client requests; and finally, endpoint paths are defined in **routes** .
 
-## Future development 🔜
-
+## 🔜 Future development 
 The following points could be added in the future:
 
 - [ ] Possibility for users to include their own categories
@@ -84,15 +82,14 @@ The following points could be added in the future:
 - [ ] Middleware that checks ownership of lists
 - [ ] Admin roles and related editing possibilities 
 
-## Author ©️
-
+## ©️ Author
 KBastamow
 
 ## Acknowledgements
 
 The Shopping List full stack app was built following this [Typescript course on Udemy](https://www.udemy.com/course/typescript-course/) and uses the stack and structure of the course project. Nevertheless, the project idea and implementation are mine alone. 
 
-## Frontend peek: 
+## Frontend peek 
 [Shoppinglist frontend](https://github.com/kbastamow/Shoppinglist_front_Typescript)
 
 ![frontend](./readme/home.png)
