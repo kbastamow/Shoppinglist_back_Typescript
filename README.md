@@ -69,10 +69,10 @@ where **controllers** holds the logic for the endpoints; **entities** are Typeor
 
 The following points could be added in the future:
 
-- [] Possibility for users to include their own categories
-- [] Email confirmation for registration
-- [] Middleware that checks ownership of lists
-- [] Admin roles and related editing possibilities 
+- [ ] Possibility for users to include their own categories
+- [ ] Email confirmation for registration
+- [ ] Middleware that checks ownership of lists
+- [ ] Admin roles and related editing possibilities 
 
 ## Author ©️
 
