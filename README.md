@@ -13,13 +13,12 @@ The project is a study of typescript usage and part of a full stack application.
 
 # Table of contents
 
-- [Description](#description)
 - [Tech and tools](#-tech-and-tools)
 - [Project structure](#-project-structure)
 - [Future development](#-future-development)
 - [Author](#-author)
 - [Acknowledgements](#acknowledgements)
-- [Frontend peek:](#frontend-peek)
+- [Frontend peek](#frontend-peek)
 
 ## 💻 Tech and tools 
 
@@ -29,7 +28,7 @@ The project is a study of typescript usage and part of a full stack application.
 - Express-validator to validate requests from client (only example usage)
 - Bcrypt & JSON Webtoken for password security and user validation
 
-Dev:
+🔨 Dev:
 - Eslint & Prettier for linting
 
 ## 🌵 Project structure 
