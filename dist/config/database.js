@@ -18,19 +18,7 @@ exports.Db = new typeorm_1.DataSource({
     entities: [user_entity_1.User],
     synchronize: true
 });
-// const db = mysql.createConnection({
-// host : "localhost",
-// user : "root",
-// password : process.env.DB_PASSWORD,
-// database : process.env.DB_NAME
-// });
-// db.connect((err) => {
-//     if (err) {
-//       console.error('Error connecting to the database:', err);
-//       return;
-//     }
-//     console.log('Connected to the database');
-//   });
+
 exports.Db.initialize().then(() => {
     console.log("Connected to database");
 });

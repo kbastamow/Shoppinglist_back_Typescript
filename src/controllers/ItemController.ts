@@ -17,10 +17,9 @@ class ItemController {
 
         try {
             const createdItem: Item = await itemRepository.save(newItem)
-            console.log(createdItem)
             return res.status(201).send(createdItem)
         } catch (error) {
-            console.log(error)
+            console.error(error)
             return res.status(500).send({ msg: "Internal server error" })
         }
     }
@@ -39,7 +38,7 @@ class ItemController {
             })
             return res.send(items)
         } catch (error) {
-            console.log(error)
+            console.error(error)
             return res.status(500).send({ msg: "Internal server error" })
         }
     }
@@ -54,11 +53,10 @@ class ItemController {
                 where: { name: req.body.category.name }
             })
             if (categoryId) {
-                console.log(categoryId)
                 req.body.category = categoryId.id
             }
         } catch (error) {
-            console.log(error)
+            console.error(error)
             return res.status(500).send({ msg: "Internal server error" })
         }
 
@@ -73,33 +71,26 @@ class ItemController {
                     }
                 });
                 // const updatedItemPlain = instanceToPlain(updatedItem) //not sure if necessary
-                // console.log(updatedItemPlain)
-                console.log(updatedItem)
                 return res.status(200).send(updatedItem)
             } else {
-                console.log("sth went wrong")
                 return res.status(400).send({ msg: "Category could not be updated" })
             }
 
         } catch (error) {
-            console.log(error)
+            console.error(error)
             return res.status(500).send({ msg: "Internal server error" })
         }
     }
 
     //Updates item  without category
     public async updateItem(req: Request, res: Response): Promise<Response> {
-        console.log(req.params.id)
-        console.log(req.body)
         const itemRepository = Db.getRepository(Item)
         //Remove categoryinfo from req.body
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { category, ...formattedData } = req.body
         try {
             // repository.update does not return the updated object:
-
             const item: UpdateResult = await itemRepository.update(req.body.id, formattedData);
-            console.log(item)
-
             if (item.affected === 1) {
                 const updatedItem = await itemRepository.findOne({
                     where: { id: req.params.id },
@@ -107,30 +98,24 @@ class ItemController {
                         category: true
                     }
                 });
-
-                // const updatedItemPlain = instanceToPlain(updatedItem) //not sure if necessary
-                // console.log(updatedItemPlain)
-                console.log("updatedItem:", updatedItem)
                 return res.status(200).send(updatedItem)
             } else {
-                console.log("sth went wrong")
                 return res.status(400).send({ msg: "Item could not be updated" })
             }
 
         } catch (error) {
-            console.log(error)
+            console.error(error)
             return res.status(500).send({ msg: "Internal server error" })
         }
     }
 
     public async deleteItem(req: Request, res: Response): Promise<Response> {
-        console.log("deleting", req.body)
         const itemRepository = Db.getRepository(Item)
         try {
             await itemRepository.delete(req.params.id)
             return res.status(200).send({ msg: "Item deleted" })
         } catch (error) {
-            console.log(error)
+            console.error(error)
             return res.status(500).send({ msg: "Internal server error" })
         }
     }

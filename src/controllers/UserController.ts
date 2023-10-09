@@ -34,8 +34,6 @@ class UserController {
     }
 
     public async login(req: Request, res: Response): Promise<Response> {
-        console.log(req.body)
-
         try {
             const user = await Db.getRepository(User).findOne({ where: { email: req.body.email } })
             if (!user) {
@@ -52,7 +50,6 @@ class UserController {
 
             // Save the user back to the database
             await Db.getRepository(User).save(user);
-            console.log(user)
 
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { password, confirmed, ...limitedDetails } = user;

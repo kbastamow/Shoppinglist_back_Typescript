@@ -11,7 +11,9 @@ export class Item {
   name: string
   @Column({ type: 'boolean', default: false })
   collected: boolean
-  @ManyToOne(() => List, (list) => list.items)
+  @ManyToOne(() => List, (list) => list.items, {
+    onDelete: "CASCADE",
+  })
   list: List
   //Not saved in Category list
   @ManyToOne(() => Category)
